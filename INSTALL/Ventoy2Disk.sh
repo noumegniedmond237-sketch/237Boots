@@ -25,8 +25,8 @@ export PATH="$(pwd)/tool/$TOOLDIR:$PATH"
 echo ''
 echo '**********************************************'
 echo "      Ventoy: $curver  $TOOLDIR"
-echo "      longpanda admin@ventoy.net"
-echo "      https://www.ventoy.net"
+echo "      237Boots - (C) 2026 Edmond Noumegni"
+echo "      https://github.com/noumegniedmond237-sketch/237Boots"
 echo '**********************************************'
 echo ''
 

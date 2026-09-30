@@ -63,6 +63,10 @@ FR = {
     "engine_missing": (
         "Moteur introuvable (Ventoy2Disk.exe). Placez-le a cote de 237Boots.exe."
     ),
+    "payload_missing": "Paquetage incomplet - fichier(s) manquant(s) : {files}",
+    "admin_warning": (
+        "Les droits administrateur sont necessaires pour installer sur un disque."
+    ),
     "done": "Termine",
     "failed": "Echec",
 }
@@ -121,6 +125,10 @@ EN = {
     ),
     "engine_missing": (
         "Engine not found (Ventoy2Disk.exe). Place it next to 237Boots.exe."
+    ),
+    "payload_missing": "Incomplete package - missing file(s): {files}",
+    "admin_warning": (
+        "Administrator rights are required to install to a disk."
     ),
     "done": "Done",
     "failed": "Failed",

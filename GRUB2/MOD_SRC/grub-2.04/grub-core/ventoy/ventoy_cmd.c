@@ -549,7 +549,7 @@ static int ventoy_set_check_result(int ret, const char *msg)
 
         grub_printf("This is NOT a standard Ventoy device and is NOT supported (%d).\n", ret);
         grub_printf("Error message: <%s>\n\n", msg);
-        grub_printf("You should follow the instructions in https://www.ventoy.net to use Ventoy.\n");
+        grub_printf("You should follow the instructions in https://github.com/noumegniedmond237-sketch/237Boots to use 237Boots.\n");
         grub_refresh();
     }
 

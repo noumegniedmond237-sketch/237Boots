@@ -481,7 +481,8 @@ STATIC VOID ventoy_warn_invalid_device(VOID)
     gST->ConOut->OutputString(gST->ConOut, VTOY_WARNING L"\r\n\r\n\r\n");
 
     gST->ConOut->OutputString(gST->ConOut, L"This is NOT a standard Ventoy device and is NOT supported.\r\n\r\n");
-    gST->ConOut->OutputString(gST->ConOut, L"You should follow the official instructions in https://www.ventoy.net\r\n");
+    gST->ConOut->OutputString(gST->ConOut, L"You should follow the instructions in https://github.com/noumegniedmond237-sketch/237Boots
+");
 
     gST->ConOut->OutputString(gST->ConOut, L"\r\n\r\nWill exit after 10 seconds ...... ");
 

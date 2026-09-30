@@ -9,10 +9,10 @@ import webbrowser
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
-    QApplication, QButtonGroup, QCheckBox, QComboBox, QFrame, QGroupBox,
+    QApplication, QButtonGroup, QCheckBox, QComboBox, QFrame,
     QHBoxLayout, QLabel, QMainWindow, QMessageBox, QPlainTextEdit, QProgressBar,
-    QPushButton, QRadioButton, QScrollArea, QSplitter, QStatusBar, QVBoxLayout,
-    QWidget,
+    QPushButton, QRadioButton, QScrollArea, QSizePolicy, QSplitter, QStatusBar,
+    QVBoxLayout, QWidget,
 )
 
 from . import i18n
@@ -100,12 +100,63 @@ class MainWindow(QMainWindow):
 
         self._disks: list[Disk] = []
         self._cards: list[DiskCard] = []
+        self._lang_value = i18n.DEFAULT
 
-        self.setMinimumSize(940, 640)
+        self.setMinimumSize(940, 760)
         self.setWindowTitle("237Boots")
         self._build_ui()
         self._apply_style()
         self.refresh()
+
+    def _retranslate(self) -> None:
+        """Reconstruit l'interface pour la locale courante.
+
+        Les libelles statiques (titres, boutons, menus, barre d'etat) sont
+        figes a la construction : sans reconstruction, changer de langue ne
+        mettrait a jour que les cartes de disques.
+        """
+        wanted = self._lang.currentData() if hasattr(self, "_lang") else i18n.DEFAULT
+
+        old = self.centralWidget()
+        if old is not None:
+            old.setParent(None)
+            old.deleteLater()
+        self.menuBar().clear()
+        self.setStatusBar(QStatusBar())
+
+        self._lang_value = wanted
+        self._build_ui()
+
+        idx = self._lang.findData(wanted)
+        if idx >= 0:
+            self._lang.blockSignals(True)
+            self._lang.setCurrentIndex(idx)
+            self._lang.blockSignals(False)
+        self.refresh()
+
+    @staticmethod
+    def _card(title: str) -> tuple[QFrame, QVBoxLayout, QHBoxLayout]:
+        """Bloc titre + contenu. Evite QGroupBox, dont le titre rogne les
+        libelles des radio/checkbox (subcontrol-origin + margin-top).
+
+        Retourne aussi la ligne d'en-tete pour y loger un bouton, ce qui evite
+        d'ajouter une rangee de hauteur dans la colonne droite.
+        """
+        frame = QFrame()
+        frame.setObjectName("Card")
+        lay = QVBoxLayout(frame)
+        lay.setContentsMargins(14, 10, 14, 11)
+        lay.setSpacing(6)
+
+        head = QHBoxLayout()
+        head.setContentsMargins(0, 0, 0, 0)
+        head.setSpacing(8)
+        label = QLabel(title)
+        label.setObjectName("CardTitle")
+        head.addWidget(label)
+        head.addStretch()
+        lay.addLayout(head)
+        return frame, lay, head
 
     # -- Construction ------------------------------------------------------
 
@@ -131,17 +182,16 @@ class MainWindow(QMainWindow):
         self._lang = QComboBox()
         self._lang.addItem("Francais (CM)", "fr_CM")
         self._lang.addItem("English (CM)", "en_CM")
+        idx = self._lang.findData(self._lang_value)
+        if idx >= 0:
+            self._lang.setCurrentIndex(idx)
         self._lang.currentIndexChanged.connect(self._on_language)
         head.addWidget(QLabel(i18n.t("lang")))
         head.addWidget(self._lang)
         outer.addLayout(head)
 
         if not is_admin():
-            warn = QLabel(
-                "Les droits administrateur sont necessaires pour installer sur un disque."
-                if i18n.get_locale() == "fr_CM"
-                else "Administrator rights are required to install to a disk."
-            )
+            warn = QLabel(i18n.t("admin_warning"))
             warn.setObjectName("Warn")
             outer.addWidget(warn)
 
@@ -156,10 +206,10 @@ class MainWindow(QMainWindow):
             absent = missing_payload(exe.parent)
             if absent:
                 note = QLabel(
-                    "Paquetage incomplet - fichier(s) manquant(s) : "
-                    + ", ".join(absent)
+                    i18n.t("payload_missing", files=", ".join(absent))
                 )
                 note.setObjectName("Warn")
+                note.setWordWrap(True)
             else:
                 note = None
         if note is not None:
@@ -170,14 +220,15 @@ class MainWindow(QMainWindow):
         split = QSplitter(Qt.Orientation.Horizontal)
 
         # -- colonne disques
-        left = QGroupBox(i18n.t("devices"))
-        lv = QVBoxLayout(left)
+        left, lv, _ = self._card(i18n.t("devices"))
         self._refresh = QPushButton(i18n.t("refresh"))
         self._refresh.clicked.connect(self.refresh)
         lv.addWidget(self._refresh)
 
         self._scroll = QScrollArea()
         self._scroll.setWidgetResizable(True)
+        # Les cartes s'adaptent a la largeur : pas de barre horizontale.
+        self._scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         holder = QWidget()
         self._cards_layout = QVBoxLayout(holder)
         self._cards_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -198,8 +249,15 @@ class MainWindow(QMainWindow):
         rv.setContentsMargins(0, 0, 0, 0)
         rv.setSpacing(12)
 
-        opts = QGroupBox(i18n.t("options"))
-        ov = QVBoxLayout(opts)
+        opts, ov, _ = self._card(i18n.t("options"))
+
+        # La colonne droite est sur-contrainte : sans politique verticale
+        # "fixed", Qt compresse les radio/checkbox a ~12 px et rogne leurs
+        # libelles (taille observee 12 contre un sizeHint de 25).
+        def rigid(*widgets):
+            for wd in widgets:
+                wd.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+
         ov.setSpacing(8)
         self._gpt = QRadioButton(i18n.t("gpt"))
         self._mbr = QRadioButton(i18n.t("mbr"))
@@ -207,6 +265,7 @@ class MainWindow(QMainWindow):
         self._style_group.addButton(self._gpt)
         self._style_group.addButton(self._mbr)
         self._gpt.setChecked(True)
+        rigid(self._gpt, self._mbr)
         ov.addWidget(QLabel(i18n.t("partition_style")))
         ov.addWidget(self._gpt)
         ov.addWidget(self._mbr)
@@ -221,10 +280,10 @@ class MainWindow(QMainWindow):
 
         self._nousb = QCheckBox(i18n.t("ignore_usb_check"))
         ov.addWidget(self._nousb)
+        rigid(self._sb, self._nousb)
         rv.addWidget(opts)
 
-        acts = QGroupBox(i18n.t("actions"))
-        av = QVBoxLayout(acts)
+        acts, av, _ = self._card(i18n.t("actions"))
         self._install = QPushButton(i18n.t("install"))
         self._install.setObjectName("Primary")
         self._install.clicked.connect(lambda: self._run("install"))
@@ -242,15 +301,16 @@ class MainWindow(QMainWindow):
         self._bar.setValue(0)
         rv.addWidget(self._bar)
 
-        logbox = QGroupBox(i18n.t("log"))
-        lv2 = QVBoxLayout(logbox)
+        logbox, lv2, lhead = self._card(i18n.t("log"))
         self._log = QPlainTextEdit()
         self._log.setReadOnly(True)
-        self._log.setMinimumHeight(180)
-        lv2.addWidget(self._log)
+        self._log.setMinimumHeight(70)
+        lv2.addWidget(self._log, 1)
         clr = QPushButton(i18n.t("clear_log"))
+        clr.setObjectName("Small")
+        clr.setFixedHeight(26)
         clr.clicked.connect(self._log.clear)
-        lv2.addWidget(clr, alignment=Qt.AlignmentFlag.AlignRight)
+        lhead.addWidget(clr)
         rv.addWidget(logbox, 1)
 
         split.addWidget(right)
@@ -321,9 +381,7 @@ class MainWindow(QMainWindow):
             return
         if not is_admin():
             QMessageBox.critical(
-                self, i18n.t("app_title"),
-                "Administrator rights required." if i18n.get_locale() != "fr_CM"
-                else "Droits administrateur requis.",
+                self, i18n.t("app_title"), i18n.t("admin_warning")
             )
             return
 
@@ -394,8 +452,7 @@ class MainWindow(QMainWindow):
 
     def _on_language(self) -> None:
         i18n.set_locale(self._lang.currentData())
-        self.refresh()
-        self.setWindowTitle(f"237Boots - {i18n.t('app_subtitle')}")
+        self._retranslate()
 
     def _show_about(self) -> None:
         box = QMessageBox(self)

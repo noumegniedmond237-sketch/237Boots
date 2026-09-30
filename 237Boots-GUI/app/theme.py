@@ -23,8 +23,9 @@ QGroupBox {{
     border: 1px solid {BORDER};
     border-radius: 8px;
     margin-top: 14px;
-    padding: 12px 10px 10px 10px;
-    font-weight: 600;
+    /* Pas de "padding" ici : en QSS il remplace le contentsRect du layout et
+       rogne les libelles des radio/checkbox. Les marges reelles sont posees
+       via setContentsMargins sur les QVBoxLayout enfants. */
 }}
 QGroupBox::title {{
     subcontrol-origin: margin;
@@ -68,6 +69,20 @@ QPushButton#Primary:hover   {{ background: {ACCENT_DIM}; }}
 QPushButton#Primary:disabled{{ background: #2b3a36; color: #5d6b66; }}
 
 QPushButton#Danger {{ border-color: {DANGER}; color: #ff8a8a; }}
+
+/* Bouton compact pour les en-tetes de bloc (le padding standard de 8px
+   ferait deborder la ligne d'en-tete). */
+QPushButton#Small {{
+    padding: 1px 10px;
+    font-size: 9pt;
+    border-radius: 4px;
+}}
+
+/*
+ * Les blocs sont construits avec un QFrame#Card + un QLabel#CardTitle plutot
+ * qu'avec QGroupBox : le titre de QGroupBox passe par subcontrol-origin et son
+ * "margin-top" rogne la zone de peinture des libelles radio/checkbox.
+ */
 
 QRadioButton {{ padding: 4px 2px; spacing: 8px; }}
 QRadioButton::indicator {{
@@ -144,6 +159,11 @@ QFrame#Card {{
     background: {BG_ALT};
     border: 1px solid {BORDER};
     border-radius: 8px;
+}}
+QLabel#CardTitle {{
+    color: {FG_DIM};
+    font-weight: 600;
+    padding-bottom: 6px;
 }}
 
 QMenuBar {{ background: {BG}; border-bottom: 1px solid {BORDER}; }}

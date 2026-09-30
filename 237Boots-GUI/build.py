@@ -37,12 +37,12 @@ def run(*args: str) -> None:
 
 
 def main() -> int:
-    onedir = "--onedir" in sys.argv
+    # PyInstaller produit par defaut un DOSSIER (dist/237Boots/237Boots.exe).
+    # --onefile produit un executable unique, qui re-extrait dans %TEMP% a
+    # chaque lancement : on le reserve a la diffusion portable.
+    onefile = "--onefile" in sys.argv
 
-    extra: list[str] = []
-    if onedir:
-        # --onedir desactive l'extraction dans %TEMP% a chaque lancement
-        extra += ["--onedir"]
+    extra: list[str] = ["--onefile"] if onefile else ["--onedir"]
 
     run(
         sys.executable, "-m", "PyInstaller",
@@ -57,17 +57,19 @@ def main() -> int:
         str(ROOT / "main.py"),
     )
 
-    built = ROOT / "dist" / ("237Boots" if onedir else "237Boots.exe")
     target_dir = ROOT / "dist" / f"237Boots-{VERSION}-win64"
     if target_dir.exists():
         shutil.rmtree(target_dir)
-    if onedir:
-        shutil.copytree(built, target_dir)
-        exe = target_dir / "237Boots.exe"
-    else:
+
+    if onefile:
+        candidate = ROOT / "dist" / "237Boots.exe"
         target_dir.mkdir(parents=True)
-        exe = target_dir / "237Boots.exe"
-        shutil.copy2(built, exe)
+        shutil.copy2(candidate, target_dir / "237Boots.exe")
+    else:
+        source_dir = ROOT / "dist" / "237Boots"
+        if not (source_dir / "237Boots.exe").is_file():
+            raise SystemExit(f"PyInstaller n'a pas produit {source_dir}\\237Boots.exe")
+        shutil.copytree(source_dir, target_dir)
 
     # Le moteur est depose a cote de l'exe : find_engine() le decouvre.
     src = INSTALL / engine_name()
