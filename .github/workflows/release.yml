@@ -1,0 +1,75 @@
+name: 237Boots Release
+
+# Publie une release a partir d'un tag. Le build du payload de boot est
+# fait par ci.yml ; ce workflow telecharge les artefacts et publie la
+# release avec les sommes de controle.
+on:
+  push:
+    tags: [ "v*" ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag a publier (ex. v1.1.17-CM1)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Publish release
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Resolve tag
+      id: tag
+      shell: bash
+      run: |
+        TAG="${{ github.event.inputs.tag }}"
+        if [ -z "$TAG" ]; then TAG="${GITHUB_REF#refs/tags/}"; fi
+        echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+        echo "Publishing $TAG"
+
+    - name: Build boot payload
+      run: docker compose up
+
+    - name: Collect artifacts
+      shell: bash
+      run: |
+        mkdir -p release
+        for f in INSTALL/ventoy-*; do
+          [ -e "$f" ] && cp -v "$f" release/ || true
+        done
+        [ -f INSTALL/sha256.txt ] && cp INSTALL/sha256.txt release/ || true
+        ls -la release/
+
+    - name: Generate checksums
+      working-directory: release
+      run: sha256sum * > 237Boots-SHA256SUMS.txt
+
+    - name: Publish
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ steps.tag.outputs.tag }}
+        name: 237Boots ${{ steps.tag.outputs.tag }}
+        body: |
+          ## 237Boots ${{ steps.tag.outputs.tag }}
+
+          Version camerounaise de [Ventoy](https://github.com/ventoy/Ventoy) par longpanda (GPL v3+).
+
+          ### Contenu
+          * `ventoy-*-windows.zip` - installateur Windows
+          * `ventoy-*-linux.tar.gz` - installateur Linux
+          * `237Boots-SHA256SUMS.txt` - sommes de controle
+
+          ### Verification
+          ```
+          sha256sum -c 237Boots-SHA256SUMS.txt
+          ```
+
+          ### Licence
+          GPL v3+. Les notices de copyright d'origine sont conservees.
+        files: release/*
+        fail_on_unmatched_files: false

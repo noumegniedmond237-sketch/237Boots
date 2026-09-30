@@ -1,37 +1,97 @@
-name: Ventoy CI
+name: 237Boots CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ master ]
-  
+    branches: [ main, master ]
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
+    name: Build boot payload
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+
     - name: Run docker compose up
       run: docker compose up
+
+    - name: List produced artifacts
+      run: ls -la INSTALL/ && cat INSTALL/sha256.txt 2>/dev/null || true
+
     - uses: actions/upload-artifact@v4
       with:
-        name: ventoy-windows
+        name: 237boots-windows
         path: INSTALL/ventoy-*windows*
+        if-no-files-found: warn
+
     - uses: actions/upload-artifact@v4
       with:
-        name: ventoy-linux
+        name: 237boots-linux
         path: INSTALL/ventoy-*linux*
+        if-no-files-found: warn
+
     - uses: actions/upload-artifact@v4
       with:
-        name: ventoy-livecd
+        name: 237boots-livecd
         path: INSTALL/ventoy-*livecd*
+        if-no-files-found: warn
+
     - uses: actions/upload-artifact@v4
       with:
-        name: SHA256SUM
+        name: sha256sum
         path: INSTALL/sha256.txt
+        if-no-files-found: warn
+
     - uses: actions/upload-artifact@v4
       with:
-        name: xxx-build-log
+        name: build-log
         path: DOC/build.log
+        if-no-files-found: warn
+
+  gui:
+    name: Build 237Boots.exe (PyQt6)
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: 237Boots-GUI
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Verify the GUI imports and enumerates drives
+      shell: pwsh
+      run: |
+        $env:QT_QPA_PLATFORM = "offscreen"
+        python -c @"
+        import os, sys
+        os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+        sys.path.insert(0, '.')
+        from PyQt6.QtWidgets import QApplication
+        app = QApplication(sys.argv)
+        from app.mainwindow import MainWindow
+        w = MainWindow()
+        print('MainWindow OK, disks:', len(w._disks))
+        "$
+
+    - name: Package the GUI
+      run: python build.py
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: 237boots-gui
+        path: 237Boots-GUI/dist/237Boots-*/
+        if-no-files-found: warn
