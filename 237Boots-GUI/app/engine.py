@@ -57,7 +57,14 @@ def _resource_dir() -> Path:
 
 
 def find_engine() -> Path | None:
-    """Retrouve le moteur en tenant compte de l'architecture de l'hote."""
+    """Retrouve le moteur, en privilegiant un candidat au payload complet.
+
+    Le moteur doit se trouver dans le repertoire qui contient boot/ et ventoy/ :
+    il y lit boot\\boot.img et ventoy\\ventoy.disk.img.xz relativement a son
+    repertoire courant. Les binaires de l'archive `altexe/` en sont exprimes
+    loin et ne fonctionnent pas (FOR_X64_ARM.txt demande explicitement de les
+    copier a la racine), donc on les ecarte.
+    """
     here = _resource_dir()
     roots = [
         here,                              # exe a cote de Ventoy2Disk.exe
@@ -71,21 +78,25 @@ def find_engine() -> Path | None:
         "arm64": "_ARM64", "aarch64": "_ARM64",
         "x86": "", "i386": "", "i686": "",
     }.get(machine)
-    if suffix is not None:
-        # Le brique x86 par defaut est en 32 bits (PE machine 0x014C) : on
-        # prefere la variante _X64 quand l'hote est en 64 bits.
+
+    # Le binaire x86 par defaut est en 32 bits (PE machine 0x014C) : sur un
+    # hote 64 bits on tente d'abord la variante _X64.
+    if suffix:
         names = [f"Ventoy2Disk{suffix}.exe"] if suffix else [
             "Ventoy2Disk_X64.exe", "Ventoy2Disk.exe"
         ]
+    else:
+        names = ["Ventoy2Disk.exe"]
+
+    # Passe 1 : candidats dont le payload est complet.
+    for want_complete in (True, False):
         for root in roots:
             for name in names:
                 candidate = root / name
-                if candidate.is_file():
+                if not candidate.is_file():
+                    continue
+                if (not missing_payload(candidate.parent)) == want_complete:
                     return candidate
-    for root in roots:
-        candidate = root / "Ventoy2Disk.exe"
-        if candidate.is_file():
-            return candidate
     return None
 
 

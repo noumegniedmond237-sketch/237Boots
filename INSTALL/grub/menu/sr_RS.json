@@ -1,5 +1,5 @@
-
-    "VTLANG_LANGUAGE_NAME": "Serbian Latin (Srpski)",
+{
+"VTLANG_LANGUAGE_NAME": "Serbian Latin (Srpski)",
     
     "VTLANG_STR_HOTKEY_LIST": "L:Језик  F1:Help  F2:Browse  F3:ListView  F4:Localboot  F5:Tools  F6:ExMenu",
     "VTLANG_STR_HOTKEY_TREE": "L:Језик  F1:Help  F2:Browse  F3:TreeView  F4:Localboot  F5:Tools  F6:ExMenu",
@@ -43,7 +43,7 @@
     
     "VTLANG_THEME_SELECT": "Theme Select",
     
-    "VTLANG_UEFI_UTIL": "Ventoy UEFI Utilities",
+    "VTLANG_UEFI_UTIL": "237Boots UEFI Utilities",
     "VTLANG_UTIL_SHOW_EFI_DRV": "Show EFI Drivers",
     "VTLANG_UTIL_FIX_BLINIT_FAIL": "Fixup Windows BlinitializeLibrary Failure",
     
@@ -86,7 +86,7 @@
     "VTLANG_CTRL_TEMP_SET": "Temporary Control Settings",
     "VTLANG_WIN11_BYPASS_CHECK": "Bypass CPU/TPM/SecureBoot check when install Windows 11",
     "VTLANG_WIN11_BYPASS_NRO": "Bypass online account requirement when install Windows 11",
-    "VTLANG_LINUX_REMOUNT": "Mount Ventoy partition after boot Linux",
+    "VTLANG_LINUX_REMOUNT": "Mount 237Boots partition after boot Linux",
     "VTLANG_SECONDARY_BOOT_MENU": "Show secondary boot menu",
     "VTLANG_WIN_UEFI_RES_LOCK": "Lock the resolution when UEFI boot Windows/WinPE",
     "VTLANG_UEFI_RES_LOCK_NONE": "None",

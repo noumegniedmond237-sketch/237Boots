@@ -73,19 +73,7 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Verify the GUI imports and enumerates drives
-      shell: pwsh
-      run: |
-        $env:QT_QPA_PLATFORM = "offscreen"
-        python -c @"
-        import os, sys
-        os.environ['QT_QPA_PLATFORM'] = 'offscreen'
-        sys.path.insert(0, '.')
-        from PyQt6.QtWidgets import QApplication
-        app = QApplication(sys.argv)
-        from app.mainwindow import MainWindow
-        w = MainWindow()
-        print('MainWindow OK, disks:', len(w._disks))
-        "$
+      run: python selftest.py
 
     - name: Package the GUI
       run: python build.py
