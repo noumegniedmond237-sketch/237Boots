@@ -12,6 +12,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  verify:
+    name: Verify rebrand contract (layer 0 + GPL)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        # L'amont est necessaire pour comparer les lignes de boot.
+        fetch-depth: 0
+
+    - name: Fetch upstream Ventoy
+      run: git remote add upstream https://github.com/ventoy/Ventoy.git && git fetch upstream master
+
+    - name: Verify layer 0, licence and brand
+      run: python tools/verify_rebrand.py
+
   build:
     name: Build boot payload
     runs-on: ubuntu-latest
