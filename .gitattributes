@@ -1,0 +1,45 @@
+# Normalise line endings explicitly.
+#
+# This repository is built on Linux (docker/CI) but is edited on Windows.
+# The initramfs hook scripts under IMG/cpio/ are executed by BusyBox ash inside
+# the booted OS, where a stray CRLF breaks the shebang and every command.
+# Pinning eol=lf prevents a Windows checkout from silently breaking the payload.
+
+* text=auto eol=lf
+
+# Windows-only / DOS-flavoured text files.
+# NB: *.rc is deliberately NOT listed - the Ventoy resource scripts are UTF-16
+# with a BOM, so forcing "text" would make git line-ending-normalise binary
+# bytes and corrupt them. "text=auto" above detects them as binary instead.
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ps1  text eol=crlf
+*.sln  text eol=crlf
+*.vcxproj       text eol=crlf
+*.vcxproj.filters text eol=crlf
+*.aps  binary
+
+# Binaries
+*.png  binary
+*.jpg  binary
+*.gif  binary
+*.ico  binary
+*.exe  binary
+*.dll  binary
+*.sys  binary
+*.efi  binary
+*.cpio binary
+*.kln  binary
+*.zip  binary
+*.gz   binary
+*.xz   binary
+*.bz2  binary
+*.7z   binary
+*.ko   binary
+*.mod  binary
+*.lst  binary
+*.tcz  binary
+*.xzm  binary
+*.o    binary
+*.a    binary
+*.so   binary

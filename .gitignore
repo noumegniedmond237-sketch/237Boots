@@ -1,0 +1,42 @@
+# ---------------------------------------------------------------------------
+# 237Boots - build artifacts
+# Note: prebuilt binary blobs that ship in the upstream tree (INSTALL/ventoy/*.cpio,
+# INSTALL/EFI/BOOT/*, 7za.xz, imdisk.*) are intentionally NOT ignored.
+# ---------------------------------------------------------------------------
+
+# Toolchains / sources fetched by docker_ci_build.sh
+/DOC/*.tar.xz
+/DOC/*.tar.gz
+/DOC/build.log
+/GRUB2/SRC/
+/GRUB2/NBP/
+/GRUB2/PXE/
+/GRUB2/grub-2.04.tar.xz
+/EDK2/edk2-edk2-stable201911.zip
+/EDK2/edk2_mod/edk2-edk2-stable201911/
+
+# Packaged releases (see INSTALL/ventoy_pack.sh)
+/INSTALL/ventoy-*-mnt/
+/INSTALL/ventoy-*-windows*.zip
+/INSTALL/ventoy-*-linux*.tar.gz
+/INSTALL/ventoy-*-livecd*.iso
+/INSTALL/sha256.txt
+/INSTALL/*.log
+
+# 237Boots GUI (PyQt6 / PyInstaller)
+/237Boots-GUI/build/
+/237Boots-GUI/dist/
+/237Boots-GUI/*.spec
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Editor / OS noise
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store

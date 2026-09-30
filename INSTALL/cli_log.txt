@@ -1,0 +1,57 @@
+[2026/09/29 16:07:59.577] 
+##################################################################################
+############################## Ventoy2DiskX64 CLI MODE #############################
+##################################################################################
+[2026/09/29 16:07:59.577] Current Directory <C:\Users\dneb2\Videos\Ventoy\INSTALL>
+[2026/09/29 16:07:59.577] Exe file path <C:\Users\dneb2\Videos\Ventoy\INSTALL\Ventoy2Disk_X64.exe>
+[2026/09/29 16:07:59.577] Current directory check OK.
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.577] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.582] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.587] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.587] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.587] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.587] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.587] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.587] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.587] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.587] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.587] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.590] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.590] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.590] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.590] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.590] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.590] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.590] ####### File <boot\boot.img> not found, did you download it from official website ? ######
+[2026/09/29 16:07:59.593] ####### File <boot\boot.img> not found, did you download it from official website ? ######
