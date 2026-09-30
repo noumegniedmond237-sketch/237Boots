@@ -21,7 +21,19 @@
 /INSTALL/ventoy-*-linux*.tar.gz
 /INSTALL/ventoy-*-livecd*.iso
 /INSTALL/sha256.txt
-/INSTALL/*.log
+
+# Journaux et fichiers de suivi ecrits par le moteur au niveau de son
+# repertoire courant (Ventoy2Disk/Ventoy2Disk.h:50-54). Utilises par
+# 237Boots-GUI/app/engine.py pour suivre la progression.
+INSTALL/log.txt
+INSTALL/cli_log.txt
+INSTALL/cli_percent.txt
+INSTALL/cli_done.txt
+**/log.txt
+**/cli_log.txt
+**/cli_percent.txt
+**/cli_done.txt
+*.log
 
 # 237Boots GUI (PyQt6 / PyInstaller)
 /237Boots-GUI/build/
